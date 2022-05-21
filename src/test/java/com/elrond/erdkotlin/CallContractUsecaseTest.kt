@@ -4,8 +4,8 @@ import com.elrond.erdkotlin.helper.TestDataProvider.account
 import com.elrond.erdkotlin.helper.TestDataProvider.networkConfig
 import com.elrond.erdkotlin.helper.TestDataProvider.wallet
 import com.elrond.erdkotlin.helper.TestUsecaseProvider.sendTransactionUsecase
-import com.elrond.erdkotlin.domain.sc.CallContractUsecase
-import com.elrond.erdkotlin.domain.wallet.models.Address
+import com.elrond.erdkotlin.sc.CallContractUsecase
+import com.elrond.erdkotlin.wallet.Address
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test

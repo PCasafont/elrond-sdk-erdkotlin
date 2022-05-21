@@ -1,7 +1,7 @@
 package com.elrond.erdkotlin
 
-import com.elrond.erdkotlin.domain.account.models.Account
-import com.elrond.erdkotlin.domain.wallet.models.Address
+import com.elrond.erdkotlin.account.Account
+import com.elrond.erdkotlin.wallet.Address
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -29,9 +29,11 @@ class ComputeDnsAddressUsecaseTest {
 
     @Test
     fun computeAddress() {
-        val address = computeDnsAddressUsecase.computeAddress(Account(
+        val address = computeDnsAddressUsecase.computeAddress(
+            Account(
             address = Address.fromBech32("erd1qyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqq7se967nn")
-        ))
+        )
+        )
         assertEquals(
             "erd1qqqqqqqqqqqqqpgq2u60t6gppp8uyrtutng27k9quk42xw6qqq7s63qz5v",
             address.bech32()

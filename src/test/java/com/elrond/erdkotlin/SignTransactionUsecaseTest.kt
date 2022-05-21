@@ -2,9 +2,9 @@ package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.helper.TestDataProvider.transactionWithData
 import com.elrond.erdkotlin.helper.TestDataProvider.wallet
-import com.elrond.erdkotlin.domain.transaction.SignTransactionUsecase
-import com.elrond.erdkotlin.domain.transaction.models.Transaction
-import com.elrond.erdkotlin.domain.wallet.models.Address
+import com.elrond.erdkotlin.transaction.SignTransactionUsecase
+import com.elrond.erdkotlin.transaction.models.Transaction
+import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.helper.TestDataProvider
 import org.junit.Assert
 import org.junit.Test

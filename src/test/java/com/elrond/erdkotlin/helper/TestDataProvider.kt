@@ -1,10 +1,10 @@
 package com.elrond.erdkotlin.helper
 
-import com.elrond.erdkotlin.domain.account.models.Account
-import com.elrond.erdkotlin.domain.networkconfig.models.NetworkConfig
-import com.elrond.erdkotlin.domain.wallet.models.Address
-import com.elrond.erdkotlin.domain.transaction.models.Transaction
-import com.elrond.erdkotlin.domain.wallet.models.Wallet
+import com.elrond.erdkotlin.account.Account
+import com.elrond.erdkotlin.networkconfig.models.NetworkConfig
+import com.elrond.erdkotlin.wallet.Address
+import com.elrond.erdkotlin.transaction.models.Transaction
+import com.elrond.erdkotlin.wallet.Wallet
 
 object TestDataProvider {
     const val alicePrivateKey = "1a927e2af5306a9bb2ea777f73e06ecc0ac9aaa72fb4ea3fecf659451394cccf"

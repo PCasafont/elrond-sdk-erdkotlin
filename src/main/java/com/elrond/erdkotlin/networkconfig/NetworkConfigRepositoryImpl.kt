@@ -1,0 +1,19 @@
+package com.elrond.erdkotlin.networkconfig
+
+import com.elrond.erdkotlin.Exceptions
+import com.elrond.erdkotlin.api.ElrondProxy
+import com.elrond.erdkotlin.data.toDomain
+import com.elrond.erdkotlin.networkconfig.models.NetworkConfig
+import java.io.IOException
+
+internal class NetworkConfigRepositoryImpl(
+    private val elrondProxy: ElrondProxy
+) : NetworkConfigRepository {
+
+    @Throws(IOException::class, Exceptions.ProxyRequestException::class)
+    override fun getNetworkConfig(): NetworkConfig {
+        val response = elrondProxy.getNetworkConfig()
+        return requireNotNull(response.data).config.toDomain()
+    }
+
+}

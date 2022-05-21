@@ -1,9 +1,9 @@
 package com.elrond.erdkotlin.helper
 
-import com.elrond.erdkotlin.domain.transaction.SendTransactionUsecase
-import com.elrond.erdkotlin.domain.transaction.SignTransactionUsecase
-import com.elrond.erdkotlin.domain.transaction.TransactionRepository
-import com.elrond.erdkotlin.domain.transaction.models.TransactionHash
+import com.elrond.erdkotlin.transaction.SendTransactionUsecase
+import com.elrond.erdkotlin.transaction.SignTransactionUsecase
+import com.elrond.erdkotlin.transaction.TransactionRepository
+import com.elrond.erdkotlin.transaction.models.TransactionHash
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

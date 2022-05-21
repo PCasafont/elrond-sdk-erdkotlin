@@ -1,33 +1,40 @@
 package com.elrond.erdkotlin
 
-import com.elrond.erdkotlin.data.account.AccountRepositoryImpl
-import com.elrond.erdkotlin.data.api.ElrondProxy
-import com.elrond.erdkotlin.data.networkconfig.NetworkConfigRepositoryImpl
-import com.elrond.erdkotlin.data.transaction.TransactionRepositoryImpl
-import com.elrond.erdkotlin.data.vm.VmRepositoryImpl
-import com.elrond.erdkotlin.domain.account.GetAccountUsecase
-import com.elrond.erdkotlin.domain.account.GetAddressBalanceUsecase
-import com.elrond.erdkotlin.domain.account.GetAddressNonceUsecase
-import com.elrond.erdkotlin.domain.dns.CheckUsernameUsecase
-import com.elrond.erdkotlin.domain.dns.ComputeDnsAddressUsecase
-import com.elrond.erdkotlin.domain.dns.RegisterDnsUsecase
-import com.elrond.erdkotlin.domain.networkconfig.GetNetworkConfigUsecase
-import com.elrond.erdkotlin.domain.transaction.*
-import com.elrond.erdkotlin.domain.transaction.SignTransactionUsecase
-import com.elrond.erdkotlin.domain.dns.GetDnsRegistrationCostUsecase
-import com.elrond.erdkotlin.domain.sc.CallContractUsecase
-import com.elrond.erdkotlin.domain.vm.query.QueryContractUsecase
-import com.elrond.erdkotlin.domain.vm.query.hex.QueryContractHexUsecase
-import com.elrond.erdkotlin.domain.vm.query.integer.QueryContractIntUsecase
-import com.elrond.erdkotlin.domain.vm.query.string.QueryContractStringUsecase
+import com.elrond.erdkotlin.account.AccountRepositoryImpl
+import com.elrond.erdkotlin.api.ElrondProxy
+import com.elrond.erdkotlin.networkconfig.NetworkConfigRepositoryImpl
+import com.elrond.erdkotlin.vm.VmRepositoryImpl
+import com.elrond.erdkotlin.account.GetAccountUsecase
+import com.elrond.erdkotlin.account.GetAddressBalanceUsecase
+import com.elrond.erdkotlin.account.GetAddressNonceUsecase
+import com.elrond.erdkotlin.dns.CheckUsernameUsecase
+import com.elrond.erdkotlin.dns.ComputeDnsAddressUsecase
+import com.elrond.erdkotlin.dns.RegisterDnsUsecase
+import com.elrond.erdkotlin.networkconfig.GetNetworkConfigUsecase
+import com.elrond.erdkotlin.transaction.*
+import com.elrond.erdkotlin.transaction.TransactionRepositoryImpl
+import com.elrond.erdkotlin.transaction.SignTransactionUsecase
+import com.elrond.erdkotlin.dns.GetDnsRegistrationCostUsecase
+import com.elrond.erdkotlin.sc.CallContractUsecase
+import com.elrond.erdkotlin.vm.query.QueryContractUsecase
+import com.elrond.erdkotlin.vm.query.hex.QueryContractHexUsecase
+import com.elrond.erdkotlin.vm.query.integer.QueryContractIntUsecase
+import com.elrond.erdkotlin.vm.query.string.QueryContractStringUsecase
 import okhttp3.OkHttpClient
 
 // Implemented as an `object` because we are not using any dependency injection library
 // We don't want to force the host app to use a specific library.
 object ErdSdk {
 
+    val elrondHttpClientBuilder = OkHttpClient.Builder()
+    private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url, elrondHttpClientBuilder)
+    private val networkConfigRepository = NetworkConfigRepositoryImpl(elrondProxy)
+    private val accountRepository = AccountRepositoryImpl(elrondProxy)
+    private val transactionRepository = TransactionRepositoryImpl(elrondProxy)
+    private val vmRepository = VmRepositoryImpl(elrondProxy)
+
     fun setNetwork(elrondNetwork: ElrondNetwork) {
-        elrondProxy.setUrl(elrondNetwork.url())
+        elrondProxy.setUrl(elrondNetwork.url)
     }
 
     fun getAccountUsecase() = GetAccountUsecase(accountRepository)
@@ -63,24 +70,13 @@ object ErdSdk {
 
     internal fun computeDnsAddressUsecase() = ComputeDnsAddressUsecase(checkUsernameUsecase())
 
-    val elrondHttpClientBuilder = OkHttpClient.Builder()
-    private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url(), elrondHttpClientBuilder)
-    private val networkConfigRepository = NetworkConfigRepositoryImpl(elrondProxy)
-    private val accountRepository = AccountRepositoryImpl(elrondProxy)
-    private val transactionRepository = TransactionRepositoryImpl(elrondProxy)
-    private val vmRepository = VmRepositoryImpl(elrondProxy)
 }
 
-sealed class ElrondNetwork {
-    object MainNet : ElrondNetwork()
-    object DevNet : ElrondNetwork()
-    object TestNet : ElrondNetwork()
-    data class Custom(val url: String) : ElrondNetwork()
-
-    fun url() = when (this) {
-        MainNet -> "https://api.elrond.com"
-        DevNet -> "https://devnet-api.elrond.com"
-        TestNet -> "https://testnet-api.elrond.com"
-        is Custom -> url
-    }
+sealed class ElrondNetwork(
+    val url: String
+) {
+    object MainNet : ElrondNetwork("https://api.elrond.com")
+    object DevNet : ElrondNetwork("https://devnet-api.elrond.com")
+    object TestNet : ElrondNetwork("https://testnet-api.elrond.com")
+    class Custom(url: String) : ElrondNetwork(url)
 }

@@ -1,7 +1,7 @@
 package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.data.toDomain
-import com.elrond.erdkotlin.data.vm.responses.QueryContractResponse
+import com.elrond.erdkotlin.vm.responses.QueryContractResponse
 import org.bouncycastle.util.encoders.Base64
 import org.junit.Assert.assertEquals
 import org.junit.Test
