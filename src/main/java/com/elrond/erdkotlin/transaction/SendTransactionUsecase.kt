@@ -4,13 +4,12 @@ import com.elrond.erdkotlin.transaction.models.Transaction
 import com.elrond.erdkotlin.wallet.Wallet
 
 class SendTransactionUsecase internal constructor(
-    private val signTransactionUsecase: SignTransactionUsecase,
     private val transactionRepository: TransactionRepository
 ) {
     fun execute(transaction: Transaction, wallet: Wallet): Transaction {
         val signedTransaction = when {
             transaction.isSigned -> transaction
-            else -> signTransactionUsecase.execute(transaction, wallet)
+            else -> wallet.sign(transaction)
         }
         return transactionRepository.sendTransaction(signedTransaction).let { sentTransaction ->
             signedTransaction.copy(txHash = sentTransaction.hash)

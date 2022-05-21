@@ -13,7 +13,6 @@ import com.elrond.erdkotlin.dns.RegisterDnsUsecase
 import com.elrond.erdkotlin.networkconfig.GetNetworkConfigUsecase
 import com.elrond.erdkotlin.transaction.*
 import com.elrond.erdkotlin.transaction.TransactionRepository
-import com.elrond.erdkotlin.transaction.SignTransactionUsecase
 import com.elrond.erdkotlin.dns.GetDnsRegistrationCostUsecase
 import com.elrond.erdkotlin.sc.CallContractUsecase
 import com.elrond.erdkotlin.vm.query.QueryContractUsecase
@@ -42,7 +41,6 @@ object ErdSdk {
     fun getAddressBalanceUsecase() = GetAddressBalanceUsecase(accountRepository)
     fun getNetworkConfigUsecase() = GetNetworkConfigUsecase(networkConfigRepository)
     fun sendTransactionUsecase() = SendTransactionUsecase(
-        SignTransactionUsecase(),
         transactionRepository
     )
 

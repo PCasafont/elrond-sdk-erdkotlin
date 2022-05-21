@@ -2,10 +2,10 @@ package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.helper.TestDataProvider.transactionWithData
 import com.elrond.erdkotlin.helper.TestDataProvider.wallet
-import com.elrond.erdkotlin.transaction.SignTransactionUsecase
 import com.elrond.erdkotlin.transaction.models.Transaction
 import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.helper.TestDataProvider
+import com.elrond.erdkotlin.transaction.sign
 import io.kotest.matchers.shouldBe
 import org.junit.Assert
 import org.junit.Test
@@ -24,7 +24,7 @@ class SignTransactionUsecaseTest {
                 '"'
             )
 
-        val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
+        val signedTransaction = wallet.sign(transaction)
 
         signedTransaction.signature shouldBe expectedSignature
         signedTransaction.serialize() shouldBe expectedJson
@@ -55,7 +55,7 @@ class SignTransactionUsecaseTest {
                 '"'
             )
 
-        val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
+        val signedTransaction = wallet.sign(transaction)
 
         transaction.serialize() shouldBe expectedSerialized
         signedTransaction.signature shouldBe expectedSignature
@@ -74,7 +74,7 @@ class SignTransactionUsecaseTest {
                 '\'',
                 '"'
             )
-        val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
+        val signedTransaction = wallet.sign(transaction)
 
         signedTransaction.signature shouldBe expectedSignature
         signedTransaction.serialize() shouldBe expectedJson
@@ -93,7 +93,7 @@ class SignTransactionUsecaseTest {
                 '\'',
                 '"'
             )
-        val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
+        val signedTransaction = wallet.sign(transaction)
 
         signedTransaction.signature shouldBe expectedSignature
         signedTransaction.serialize() shouldBe expectedJson
