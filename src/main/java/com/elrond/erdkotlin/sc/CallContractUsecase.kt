@@ -14,7 +14,6 @@ import java.util.*
 class CallContractUsecase internal constructor(
     private val sendTransactionUsecase: SendTransactionUsecase,
 ) {
-
     // source:
     // https://github.com/ElrondNetwork/elrond-sdk/blob/576fdc4bc0fa713738d8556600f04e6377c7623f/erdpy/contracts.py#L62
     fun execute(
@@ -61,7 +60,5 @@ class CallContractUsecase internal constructor(
             return "0$asHexstring"
         }
         return asHexstring
-
     }
-
 }

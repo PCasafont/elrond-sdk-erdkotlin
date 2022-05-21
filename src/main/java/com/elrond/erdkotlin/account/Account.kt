@@ -9,7 +9,4 @@ data class Account(
     val balance: BigInteger = BigInteger.ZERO,
     val code: String? = null,
     val username: String? = null
-) {
-    // keep it to allow companion extension
-    companion object
-}
+)

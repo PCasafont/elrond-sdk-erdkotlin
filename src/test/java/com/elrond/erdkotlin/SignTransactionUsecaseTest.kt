@@ -6,6 +6,7 @@ import com.elrond.erdkotlin.transaction.SignTransactionUsecase
 import com.elrond.erdkotlin.transaction.models.Transaction
 import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.helper.TestDataProvider
+import io.kotest.matchers.shouldBe
 import org.junit.Assert
 import org.junit.Test
 import java.math.BigInteger
@@ -25,8 +26,8 @@ class SignTransactionUsecaseTest {
 
         val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
 
-        Assert.assertEquals(expectedSignature, signedTransaction.signature)
-        Assert.assertEquals(expectedJson, signedTransaction.serialize())
+        signedTransaction.signature shouldBe expectedSignature
+        signedTransaction.serialize() shouldBe expectedJson
     }
 
     @Test
@@ -56,9 +57,9 @@ class SignTransactionUsecaseTest {
 
         val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
 
-        Assert.assertEquals(expectedSerialized, transaction.serialize())
-        Assert.assertEquals(expectedSignature, signedTransaction.signature)
-        Assert.assertEquals(expectedJson, signedTransaction.serialize())
+        transaction.serialize() shouldBe expectedSerialized
+        signedTransaction.signature shouldBe expectedSignature
+        signedTransaction.serialize() shouldBe expectedJson
     }
 
 
@@ -75,8 +76,8 @@ class SignTransactionUsecaseTest {
             )
         val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
 
-        Assert.assertEquals(expectedSignature, signedTransaction.signature)
-        Assert.assertEquals(expectedJson, signedTransaction.serialize())
+        signedTransaction.signature shouldBe expectedSignature
+        signedTransaction.serialize() shouldBe expectedJson
     }
 
     @Test
@@ -94,8 +95,7 @@ class SignTransactionUsecaseTest {
             )
         val signedTransaction = SignTransactionUsecase().execute(transaction, wallet)
 
-        Assert.assertEquals(expectedSignature, signedTransaction.signature)
-        Assert.assertEquals(expectedJson, signedTransaction.serialize())
+        signedTransaction.signature shouldBe expectedSignature
+        signedTransaction.serialize() shouldBe expectedJson
     }
-
 }

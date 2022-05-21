@@ -19,7 +19,4 @@ data class NetworkConfig(
     val erdShardConsensusGroupSize: Long,
     val erdStartTime: Long,
     val erdTopUpFactor: String
-) {
-    // keep it to allow companion extension
-    companion object
-}
+)

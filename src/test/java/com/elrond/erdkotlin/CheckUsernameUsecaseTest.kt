@@ -1,5 +1,6 @@
 package com.elrond.erdkotlin
 
+import io.kotest.matchers.shouldBe
 import org.junit.Assert
 import org.junit.Test
 
@@ -10,13 +11,13 @@ class CheckUsernameUsecaseTest {
     @Test
     fun `valid alphanumeric`() {
         val isUsernameValid = checkUsernameUsecase.execute("abc123.elrond")
-        Assert.assertTrue(isUsernameValid)
+        isUsernameValid shouldBe true
     }
 
     @Test
     fun `valid 3 chars`() {
         val isUsernameValid = checkUsernameUsecase.execute("abc.elrond")
-        Assert.assertTrue(isUsernameValid)
+        isUsernameValid shouldBe true
     }
 
     @Test
@@ -24,7 +25,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abcdefghiklmnopqrstuvwxyz.elrond"
         )
-        Assert.assertTrue(isUsernameValid)
+        isUsernameValid shouldBe true
     }
 
     @Test
@@ -32,7 +33,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "ab.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -40,7 +41,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abcdefghiklmnopqrstuvwxyz1.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -48,7 +49,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "ABC.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -56,7 +57,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abcde"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -64,7 +65,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abc.elrond.com"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -72,7 +73,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abc_123.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -80,7 +81,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abc-123.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -88,7 +89,7 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abc@123.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 
     @Test
@@ -96,6 +97,6 @@ class CheckUsernameUsecaseTest {
         val isUsernameValid = checkUsernameUsecase.execute(
             "abc 123.elrond"
         )
-        Assert.assertFalse(isUsernameValid)
+        isUsernameValid shouldBe false
     }
 }

@@ -2,14 +2,12 @@ package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.data.toDomain
 import com.elrond.erdkotlin.vm.responses.QueryContractResponse
+import io.kotest.matchers.shouldBe
 import org.bouncycastle.util.encoders.Base64
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 import java.math.BigInteger
 
-@RunWith(MockitoJUnitRunner::class)
 class DataMapperTest {
 
     @Test
@@ -30,21 +28,9 @@ class DataMapperTest {
 
         val returnedData = queryResponseData.toDomain().returnData?.first()!!
 
-        assertEquals(
-            "ZA==",
-            returnedData.asBase64
-        )
-        assertEquals(
-            "64",
-            returnedData.asHex
-        )
-        assertEquals(
-            "d",
-            returnedData.asString,
-        )
-        assertEquals(
-            100.toBigInteger(),
-            returnedData.asBigInt
-        )
+        returnedData.asBase64 shouldBe "ZA=="
+        returnedData.asHex shouldBe "64"
+        returnedData.asString shouldBe "d"
+        returnedData.asBigInt shouldBe 100.toBigInteger()
     }
 }

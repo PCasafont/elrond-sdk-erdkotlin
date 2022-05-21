@@ -4,16 +4,13 @@ import com.elrond.erdkotlin.transaction.SendTransactionUsecase
 import com.elrond.erdkotlin.transaction.SignTransactionUsecase
 import com.elrond.erdkotlin.transaction.TransactionRepository
 import com.elrond.erdkotlin.transaction.models.TransactionHash
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import io.mockk.every
+import io.mockk.mockk
 
 object TestUsecaseProvider {
 
-    internal val transactionRepository = mock<TransactionRepository>().apply {
-        whenever(sendTransaction(any())).thenReturn(
-            TransactionHash("")
-        )
+    internal val transactionRepository: TransactionRepository = mockk {
+        every { sendTransaction(any()) } returns TransactionHash("")
     }
 
     internal val sendTransactionUsecase = SendTransactionUsecase(

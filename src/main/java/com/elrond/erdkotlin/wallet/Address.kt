@@ -127,7 +127,5 @@ data class Address private constructor(
             }
             return ret.toByteArray()
         }
-
     }
-
 }

@@ -6,13 +6,12 @@ import com.elrond.erdkotlin.helper.TestDataProvider.wallet
 import com.elrond.erdkotlin.helper.TestUsecaseProvider.sendTransactionUsecase
 import com.elrond.erdkotlin.sc.CallContractUsecase
 import com.elrond.erdkotlin.wallet.Address
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class CallContractUsecaseTest {
 
     private val callContractUsecase = CallContractUsecase(sendTransactionUsecase)
@@ -30,15 +29,12 @@ class CallContractUsecaseTest {
             args = listOf("255", "0x5745474c442d616263646566", "0xDEADBEEF")
         )
 
-        assertEquals(
-            sentTransaction.data,
-            "awesomeFunc@FF@5745474C442D616263646566@DEADBEEF"
-        )
+        sentTransaction.data shouldBe "awesomeFunc@FF@5745474C442D616263646566@DEADBEEF"
     }
 
     @Test
     fun `should fail if arg is not digit`() {
-        assertThrows(IllegalArgumentException::class.java) {
+        shouldThrow<IllegalArgumentException> {
             callContractUsecase.execute(
                 account = account,
                 wallet = wallet,

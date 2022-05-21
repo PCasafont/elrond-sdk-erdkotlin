@@ -1,8 +1,8 @@
 package com.elrond.erdkotlin
 
-import com.elrond.erdkotlin.account.AccountRepositoryImpl
+import com.elrond.erdkotlin.account.AccountRepository
 import com.elrond.erdkotlin.api.ElrondProxy
-import com.elrond.erdkotlin.networkconfig.NetworkConfigRepositoryImpl
+import com.elrond.erdkotlin.networkconfig.NetworkConfigRepository
 import com.elrond.erdkotlin.vm.VmRepositoryImpl
 import com.elrond.erdkotlin.account.GetAccountUsecase
 import com.elrond.erdkotlin.account.GetAddressBalanceUsecase
@@ -12,7 +12,7 @@ import com.elrond.erdkotlin.dns.ComputeDnsAddressUsecase
 import com.elrond.erdkotlin.dns.RegisterDnsUsecase
 import com.elrond.erdkotlin.networkconfig.GetNetworkConfigUsecase
 import com.elrond.erdkotlin.transaction.*
-import com.elrond.erdkotlin.transaction.TransactionRepositoryImpl
+import com.elrond.erdkotlin.transaction.TransactionRepository
 import com.elrond.erdkotlin.transaction.SignTransactionUsecase
 import com.elrond.erdkotlin.dns.GetDnsRegistrationCostUsecase
 import com.elrond.erdkotlin.sc.CallContractUsecase
@@ -28,9 +28,9 @@ object ErdSdk {
 
     val elrondHttpClientBuilder = OkHttpClient.Builder()
     private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url, elrondHttpClientBuilder)
-    private val networkConfigRepository = NetworkConfigRepositoryImpl(elrondProxy)
-    private val accountRepository = AccountRepositoryImpl(elrondProxy)
-    private val transactionRepository = TransactionRepositoryImpl(elrondProxy)
+    private val networkConfigRepository = NetworkConfigRepository(elrondProxy)
+    private val accountRepository = AccountRepository(elrondProxy)
+    private val transactionRepository = TransactionRepository(elrondProxy)
     private val vmRepository = VmRepositoryImpl(elrondProxy)
 
     fun setNetwork(elrondNetwork: ElrondNetwork) {
