@@ -1,13 +1,12 @@
 package com.elrond.erdkotlin.api
 
-import com.elrond.erdkotlin.Exceptions
+import com.elrond.erdkotlin.ProxyRequestException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import java.io.IOException
 
 internal class ElrondClient(
     var url: String,
@@ -16,7 +15,6 @@ internal class ElrondClient(
 ) {
     private val httpClient: OkHttpClient by lazy { httpClientBuilder.build() }
 
-    @Throws(IOException::class)
     inline fun <reified T : ResponseBase<*>> doGet(resourceUrl: String): T {
         val url = "$url/$resourceUrl"
         val request: Request = Request.Builder().url(url).build()
@@ -28,7 +26,6 @@ internal class ElrondClient(
         return response
     }
 
-    @Throws(IOException::class)
     inline fun <reified T : ResponseBase<*>> doPost(resourceUrl: String, json: String): T {
         val url = "$url/$resourceUrl"
         val body = RequestBody.create(JSON, json)
@@ -53,15 +50,13 @@ internal class ElrondClient(
         val error: String? = null
         val code: String = "" // ex: "successful"
 
-        @Throws(Exceptions.ProxyRequestException::class)
         fun throwIfError() {
             if (!error.isNullOrEmpty()) {
-                throw Exceptions.ProxyRequestException(error)
+                throw ProxyRequestException(error)
             }
             if (code != "successful") {
-                throw Exceptions.ProxyRequestException(code)
+                throw ProxyRequestException(code)
             }
         }
     }
-
 }

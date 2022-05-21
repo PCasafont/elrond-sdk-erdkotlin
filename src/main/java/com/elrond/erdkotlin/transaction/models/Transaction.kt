@@ -1,6 +1,7 @@
 package com.elrond.erdkotlin.transaction.models
 
-import com.elrond.erdkotlin.Exceptions
+import com.elrond.erdkotlin.AddressException
+import com.elrond.erdkotlin.CannotSerializeTransactionException
 import com.elrond.erdkotlin.wallet.Address
 import com.google.gson.GsonBuilder
 import java.math.BigInteger
@@ -23,18 +24,15 @@ data class Transaction(
     val signature: String = "",
     val txHash: String = ""
 ) {
-
     val isSigned = signature.isNotEmpty()
     val isSent = txHash.isNotEmpty()
 
-    @Throws(Exceptions.CannotSerializeTransactionException::class)
     fun serialize(): String = try {
         gson.toJson(toMap())
-    } catch (error: Exceptions.AddressException) {
-        throw Exceptions.CannotSerializeTransactionException()
+    } catch (error: AddressException) {
+        throw CannotSerializeTransactionException()
     }
 
-    @Throws(Exceptions.AddressException::class)
     private fun toMap(): Map<String, Any> {
         return mutableMapOf<String, Any>().apply {
             put("nonce", nonce)

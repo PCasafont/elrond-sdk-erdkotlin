@@ -1,22 +1,19 @@
 package com.elrond.erdkotlin.wallet
 
-import com.elrond.erdkotlin.Exceptions
+import com.elrond.erdkotlin.*
 import org.bitcoinj.core.Bech32
 import org.bouncycastle.util.encoders.DecoderException
 import org.bouncycastle.util.encoders.Hex
 import java.io.ByteArrayOutputStream
 
-
 @Suppress("DataClassPrivateConstructor")
 data class Address private constructor(
     val hex: String
 ) {
-
     fun pubkey(): ByteArray {
         return Hex.decode(hex)
     }
 
-    @Throws(Exceptions.AddressException::class)
     fun bech32(): String {
         return Bech32.encode(HRP, convertBits(pubkey(), 8, 5, true))
     }
@@ -31,25 +28,23 @@ data class Address private constructor(
 
         fun createZeroAddress() = Address(ZERO_PUBKEY_STRING)
 
-        @Throws(Exceptions.AddressException::class, Exceptions.BadAddressHrpException::class)
         fun fromBech32(value: String): Address {
             val bech32Data = try {
                 Bech32.decode(value)
             } catch (e: Exception) {
-                throw Exceptions.CannotCreateBech32AddressException(value)
+                throw CannotCreateBech32AddressException(value)
             }
             if (bech32Data.hrp != HRP) {
-                throw Exceptions.BadAddressHrpException()
+                throw BadAddressHrpException()
             }
             val decodedBytes: ByteArray = convertBits(bech32Data.data, 5, 8, false)
             val hex = String(Hex.encode(decodedBytes))
             return Address(hex)
         }
 
-        @Throws(Exceptions.AddressException::class)
         fun fromHex(value: String): Address {
             if (value.length != PUBKEY_STRING_LENGTH || !isValidHex(value)) {
-                throw Exceptions.CannotCreateAddressException(value)
+                throw CannotCreateAddressException(value)
             }
             return Address(value)
         }
@@ -67,7 +62,7 @@ data class Address private constructor(
             return try {
                 fromBech32(value)
                 true
-            } catch (error: Exceptions.AddressException) {
+            } catch (error: AddressException) {
                 false
             }
         }
@@ -75,7 +70,6 @@ data class Address private constructor(
         /**
          * General power-of-2 base conversion.
          */
-        @Throws(Exceptions.AddressException::class)
         fun convertBits(
             data: ByteArray,
             fromBits: Int,
@@ -114,8 +108,8 @@ data class Address private constructor(
             val maxAcc = (1 shl fromBits + toBits - 1) - 1
             for (value in data) {
                 val valueAsInt: Int = (value.toInt() and 0xff)
-                if (valueAsInt < 0 || valueAsInt ushr fromBits != 0) {
-                    throw Exceptions.CannotConvertBitsException()
+                if (valueAsInt ushr fromBits != 0) {
+                    throw CannotConvertBitsException()
                 }
                 acc = ((acc shl fromBits) or valueAsInt) and maxAcc
                 bits += fromBits
@@ -129,7 +123,7 @@ data class Address private constructor(
                     ret.write((acc shl (toBits - bits)) and maxv)
                 }
             } else if (bits >= fromBits || ((acc shl (toBits - bits)) and maxv) != 0) {
-                throw Exceptions.CannotConvertBitsException()
+                throw CannotConvertBitsException()
             }
             return ret.toByteArray()
         }

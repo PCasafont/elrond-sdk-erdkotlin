@@ -1,6 +1,7 @@
 package com.elrond.erdkotlin.wallet
 
-import com.elrond.erdkotlin.Exceptions
+import com.elrond.erdkotlin.CannotDeriveKeysException
+import com.elrond.erdkotlin.CannotGenerateMnemonicException
 import org.bitcoinj.crypto.MnemonicCode
 import org.bitcoinj.crypto.MnemonicException.MnemonicLengthException
 import org.bouncycastle.crypto.digests.SHA512Digest
@@ -17,12 +18,10 @@ import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 import java.security.SecureRandom
 
-
 class Wallet(
     private val publicKey: ByteArray,
     private val privateKey: ByteArray,
 ) {
-
     val publicKeyHex: String = String(Hex.encode(publicKey))
     val privateKeyHex: String = String(Hex.encode(privateKey))
 
@@ -65,26 +64,24 @@ class Wallet(
             Hex.decode(privateKeyHex)
         )
 
-        @Throws(Exceptions.CannotDeriveKeysException::class)
         fun createFromMnemonic(mnemonic: String, accountIndex: Long): Wallet {
             return try {
                 val seed: ByteArray = mnemonicToBip39Seed(mnemonic)
                 val privateKey: ByteArray = bip39SeedToPrivateKey(seed, accountIndex)
                 createFromPrivateKey(privateKey)
             } catch (error: IOException) {
-                throw Exceptions.CannotDeriveKeysException()
+                throw CannotDeriveKeysException()
             }
         }
 
-        @Throws(Exceptions.CannotGenerateMnemonicException::class)
         fun generateMnemonic(): List<String> {
             return try {
                 val entropy = generateEntropy()
                 MnemonicCode().toMnemonic(entropy)
             } catch (error: IOException) {
-                throw Exceptions.CannotGenerateMnemonicException()
+                throw CannotGenerateMnemonicException()
             } catch (error: MnemonicLengthException) {
-                throw Exceptions.CannotGenerateMnemonicException()
+                throw CannotGenerateMnemonicException()
             }
         }
 
@@ -103,7 +100,6 @@ class Wallet(
             return (generator.generateDerivedParameters(512) as KeyParameter).key
         }
 
-        @Throws(IOException::class)
         private fun bip39SeedToPrivateKey(seed: ByteArray, accountIndex: Long): ByteArray {
             var keyAndChainCode = bip39SeedToMasterKey(seed)
             var key: ByteArray = keyAndChainCode.key
@@ -131,7 +127,6 @@ class Wallet(
             return KeyAndChainCode(masterKey, chainCode)
         }
 
-        @Throws(IOException::class)
         private fun ckdPriv(key: ByteArray, chainCode: ByteArray, index: Long): KeyAndChainCode {
             val indexBuffer: ByteBuffer = ByteBuffer.allocate(4).apply {
                 order(ByteOrder.BIG_ENDIAN)
