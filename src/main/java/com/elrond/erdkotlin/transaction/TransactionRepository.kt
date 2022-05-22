@@ -13,7 +13,7 @@ internal class TransactionRepository(
 ) {
     suspend fun sendTransaction(transaction: Transaction): TransactionHash {
         val response = elrondGateway.sendTransaction(transaction)
-        return TransactionHash(requireNotNull(response).txHash)
+        return TransactionHash(response.txHash)
     }
 
     suspend fun getTransactions(address: Address): List<TransactionOnNetwork> {
@@ -23,16 +23,16 @@ internal class TransactionRepository(
 
     suspend fun estimateCostOfTransaction(transaction: Transaction): String {
         val response = elrondGateway.estimateCostOfTransaction(transaction)
-        return requireNotNull(response).txGasUnits
+        return response.txGasUnits
     }
 
     suspend fun getTransactionInfo(txHash: String, sender: Address?): TransactionInfo {
         val response = elrondGateway.getTransactionInfo(txHash, sender)
-        return requireNotNull(response).transaction.toDomain()
+        return response.transaction.toDomain()
     }
 
     suspend fun getTransactionStatus(txHash: String, sender: Address?): String {
         val response = elrondGateway.getTransactionStatus(txHash, sender)
-        return requireNotNull(response).status
+        return response.status
     }
 }

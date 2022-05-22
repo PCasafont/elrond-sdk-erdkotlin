@@ -15,6 +15,7 @@ dependencies {
 
     implementation("org.bitcoinj:bitcoinj-core:0.16.1")
 
+    implementation("commons-codec:commons-codec:1.13")
     implementation("io.ktor:ktor-client-apache:2.0.1")
     implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
