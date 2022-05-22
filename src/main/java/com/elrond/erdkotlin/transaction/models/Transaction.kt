@@ -4,9 +4,20 @@ import com.elrond.erdkotlin.AddressException
 import com.elrond.erdkotlin.CannotSerializeTransactionException
 import com.elrond.erdkotlin.wallet.Address
 import com.google.gson.GsonBuilder
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import org.bouncycastle.util.encoders.Base64
+
+private val json = Json {
+    encodeDefaults = false
+}
+const val TRANSACTION_VERSION_DEFAULT = 1
+const val TRANSACTION_VERSION_TX_HASH_SIGN = 2
+const val TRANSACTION_OPTION_NONE = 0
+const val TRANSACTION_OPTION_TX_HASH_SIGN = 1
 
 data class Transaction(
     val sender: Address,
@@ -18,61 +29,53 @@ data class Transaction(
     val value: BigInteger = BigInteger.ZERO,
     val gasPrice: Long = 1000000000,
     val gasLimit: Long = 50000,
-    val version: Int = VERSION_DEFAULT,
+    val version: Int = TRANSACTION_VERSION_DEFAULT,
     val data: String? = null,
-    val option: Int = OPTION_NONE,
+    val option: Int = TRANSACTION_OPTION_NONE,
     val signature: String = "",
     val txHash: String = ""
 ) {
     val isSigned = signature.isNotEmpty()
     val isSent = txHash.isNotEmpty()
+}
 
-    fun serialize(): String = try {
-        gson.toJson(toMap())
-    } catch (error: AddressException) {
-        throw CannotSerializeTransactionException()
-    }
+@Serializable
+class TransactionDto(
+    val nonce: Long,
+    val value: String,
+    val receiver: String,
+    val sender: String,
+    val senderUsername: String? = null,
+    val receiverUsername: String? = null,
+    val gasPrice: Long,
+    val gasLimit: Long,
+    val data: String? = null,
+    val chainID: String,
+    val version: Int,
+    val option: Int? = null,
+    val signature: String? = null
+)
 
-    private fun toMap(): Map<String, Any> {
-        return mutableMapOf<String, Any>().apply {
-            put("nonce", nonce)
-            put("value", value.toString(10))
-            put("receiver", receiver.bech32())
-            put("sender", sender.bech32())
-            if (!senderUsername.isNullOrEmpty()) {
-                put("senderUsername", encode(senderUsername))
-            }
-            if (!receiverUsername.isNullOrEmpty()) {
-                put("receiverUsername", encode(receiverUsername))
-            }
-            put("gasPrice", gasPrice)
-            put("gasLimit", gasLimit)
-            if (!data.isNullOrEmpty()) {
-                put("data", encode(data))
-            }
-            put("chainID", chainID)
-            put("version", version)
-            if (option != OPTION_NONE) {
-                put("option", option)
-            }
-            if (signature.isNotEmpty()) {
-                put("signature", signature)
-            }
-        }
-    }
+fun Transaction.toDto() = TransactionDto(
+    nonce = nonce,
+    value = value.toString(10),
+    receiver = receiver.bech32(),
+    sender = sender.bech32(),
+    senderUsername = senderUsername.takeIf { !it.isNullOrEmpty() }?.encode(),
+    receiverUsername = receiverUsername.takeIf { !it.isNullOrEmpty() }?.encode(),
+    gasPrice = gasPrice,
+    gasLimit = gasLimit,
+    data = data.takeIf { !it.isNullOrEmpty() }?.encode(),
+    chainID = chainID,
+    version = version,
+    option.takeIf { it != TRANSACTION_OPTION_NONE },
+    signature.takeIf { it.isNotEmpty() }
+)
 
-    private fun encode(data: String): String {
-        val dataAsBytes: ByteArray = data.toByteArray(StandardCharsets.UTF_8)
-        val encodedAsBytes: ByteArray = Base64.encode(dataAsBytes)
-        return String(encodedAsBytes)
-    }
+fun Transaction.serialize() = json.encodeToString(toDto())
 
-    companion object {
-        private val gson = GsonBuilder().disableHtmlEscaping().create()
-        const val VERSION_DEFAULT = 1
-        const val VERSION_TX_HASH_SIGN = 2
-        const val OPTION_NONE = 0
-        const val OPTION_TX_HASH_SIGN = 1
-    }
-
+private fun String.encode(): String {
+    val dataAsBytes: ByteArray = toByteArray(StandardCharsets.UTF_8)
+    val encodedAsBytes: ByteArray = Base64.encode(dataAsBytes)
+    return String(encodedAsBytes)
 }

@@ -1,6 +1,7 @@
 package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.helper.TestDataProvider
+import com.elrond.erdkotlin.transaction.models.serialize
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 

@@ -3,12 +3,12 @@ package com.elrond.erdkotlin
 import com.elrond.erdkotlin.helper.TestDataProvider.transactionWithData
 import com.elrond.erdkotlin.helper.TestDataProvider.wallet
 import com.elrond.erdkotlin.transaction.models.Transaction
-import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.helper.TestDataProvider
+import com.elrond.erdkotlin.transaction.models.TRANSACTION_OPTION_TX_HASH_SIGN
+import com.elrond.erdkotlin.transaction.models.serialize
 import com.elrond.erdkotlin.transaction.sign
 import com.elrond.erdkotlin.wallet.asBech32Address
 import io.kotest.matchers.shouldBe
-import org.junit.Assert
 import org.junit.Test
 import java.math.BigInteger
 
@@ -85,7 +85,7 @@ class SignTransactionUsecaseTest {
     fun `sign with option`() {
         // with an option
         val transaction = TestDataProvider.transactionWithoutData().copy(
-            option = Transaction.OPTION_TX_HASH_SIGN
+            option = TRANSACTION_OPTION_TX_HASH_SIGN
         )
         val expectedSignature =
             "c48181af13b1c51426e7e985a790f62c98cf9e0297e8d0c0b044fe3a12391381fee833e71a33ca27287ffb5191aa46235747b1164ed574297e39ae74dd26b606"

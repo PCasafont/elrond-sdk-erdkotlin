@@ -1,55 +1,54 @@
 package com.elrond.erdkotlin.api
 
 import com.elrond.erdkotlin.ProxyRequestException
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 internal class ElrondClient(
-    var url: String,
-    private val gson: Gson
+    var url: String
 ) {
     private val httpClient: HttpClient by lazy {
-        HttpClient()
-    }
-
-    suspend inline fun <reified T : ResponseBase<*>> doGet(resourceUrl: String): T {
-        val responseJson: String = httpClient.get("$url/$resourceUrl") {
-            contentType(ContentType.Application.Json)
-        }.bodyAsText()
-        val response: T = gson.fromJson(responseJson)
-        response.throwIfError()
-        return response
-    }
-
-    suspend inline fun <reified T : ResponseBase<*>> doPost(resourceUrl: String, json: String): T {
-        val responseJson = httpClient.post("$url/$resourceUrl") {
-            contentType(ContentType.Application.Json)
-            setBody(json)
-        }.bodyAsText()
-        val response: T = gson.fromJson(responseJson)
-        response.throwIfError()
-        return response
-    }
-
-    private inline fun <reified T> Gson.fromJson(json: String) =
-        this.fromJson<T>(json, object : TypeToken<T>() {}.type)!!
-
-    class ResponseBase<T> {
-        val data: T? = null
-        val error: String? = null
-        val code: String = "" // ex: "successful"
-
-        fun throwIfError() {
-            if (!error.isNullOrEmpty()) {
-                throw ProxyRequestException(error)
-            }
-            if (code != "successful") {
-                throw ProxyRequestException(code)
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
             }
         }
+    }
+
+    suspend inline fun <reified T> doGet(resourceUrl: String): T {
+        val response: ResponseBase<T> = httpClient.get("$url/$resourceUrl").body()
+        return response.extractData()
+    }
+
+    suspend inline fun <reified T, reified B> doPost(resourceUrl: String, body: B): T {
+        val response: ResponseBase<T> = httpClient.post("$url/$resourceUrl") {
+            setBody(body)
+        }.body()
+        return response.extractData()
+    }
+}
+
+@Serializable
+class ResponseBase<T>(
+    private val data: T?,
+    private val error: String?,
+    private val code: String // ex: "successful"
+) {
+    fun extractData(): T {
+        if (!error.isNullOrEmpty()) {
+            throw ProxyRequestException(error)
+        }
+        if (code != "successful" || data == null) {
+            throw ProxyRequestException(code)
+        }
+
+        return data
     }
 }

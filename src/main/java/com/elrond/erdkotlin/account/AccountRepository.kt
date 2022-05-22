@@ -10,17 +10,17 @@ internal class AccountRepository(
 ) {
     suspend fun getAccount(address: Address): Account {
         val response = elrondProxy.getAccount(address)
-        val payload = requireNotNull(response.data).account
+        val payload = requireNotNull(response).account
         return payload.toDomain(address)
     }
 
     suspend fun getAddressNonce(address: Address): Long {
         val response = elrondProxy.getAddressNonce(address)
-        return requireNotNull(response.data).nonce
+        return requireNotNull(response).nonce
     }
 
     suspend fun getAddressBalance(address: Address): BigInteger {
         val response = elrondProxy.getAddressBalance(address)
-        return requireNotNull(response.data).balance
+        return requireNotNull(response).balance
     }
 }

@@ -9,6 +9,6 @@ internal class NetworkConfigRepository(
 ) {
     suspend fun getNetworkConfig(): NetworkConfig {
         val response = elrondProxy.getNetworkConfig()
-        return requireNotNull(response.data).config.toDomain()
+        return requireNotNull(response).config.toDomain()
     }
 }

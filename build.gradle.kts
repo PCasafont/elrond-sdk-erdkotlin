@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.6.20"
+    kotlin("plugin.serialization") version "1.6.20"
 }
 
 group = "elrond"
@@ -11,6 +12,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    //implementation(kotlin("serialization"))
 
     implementation("commons-codec:commons-codec:1.13")
     implementation("com.google.code.gson:gson:2.8.5")

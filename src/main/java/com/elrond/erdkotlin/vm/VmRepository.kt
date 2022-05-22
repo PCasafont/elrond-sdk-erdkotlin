@@ -11,19 +11,19 @@ internal class VmRepository(
     private val elrondProxy: ElrondProxy
 ) {
     suspend fun queryContract(queryContractInput: QueryContractInput): QueryContractOutput {
-        return requireNotNull(elrondProxy.queryContract(queryContractInput).data).data.toDomain()
+        return requireNotNull(elrondProxy.queryContract(queryContractInput).data).toDomain()
     }
 
     suspend fun queryContractHex(queryContractInput: QueryContractInput): QueryContractStringOutput {
-        return requireNotNull(elrondProxy.queryContractHex(queryContractInput).data).toDomain()
+        return requireNotNull(elrondProxy.queryContractHex(queryContractInput)).toDomain()
     }
 
     suspend fun queryContractString(queryContractInput: QueryContractInput): QueryContractStringOutput {
-        return requireNotNull(elrondProxy.queryContractString(queryContractInput).data).toDomain()
+        return requireNotNull(elrondProxy.queryContractString(queryContractInput)).toDomain()
     }
 
     suspend fun queryContractInt(queryContractInput: QueryContractInput): QueryContractDigitOutput {
-        return requireNotNull(elrondProxy.queryContractInt(queryContractInput).data).toDomain()
+        return requireNotNull(elrondProxy.queryContractInt(queryContractInput)).toDomain()
     }
 
 }

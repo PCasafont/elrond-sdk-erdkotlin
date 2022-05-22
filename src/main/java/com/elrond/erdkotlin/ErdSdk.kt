@@ -7,8 +7,6 @@ import com.elrond.erdkotlin.vm.VmRepository
 import com.elrond.erdkotlin.account.GetAccountUsecase
 import com.elrond.erdkotlin.account.GetAddressBalanceUsecase
 import com.elrond.erdkotlin.account.GetAddressNonceUsecase
-import com.elrond.erdkotlin.dns.CheckUsernameUsecase
-import com.elrond.erdkotlin.dns.ComputeDnsAddressUsecase
 import com.elrond.erdkotlin.dns.RegisterDnsUsecase
 import com.elrond.erdkotlin.networkconfig.GetNetworkConfigUsecase
 import com.elrond.erdkotlin.transaction.*
@@ -20,11 +18,10 @@ import com.elrond.erdkotlin.vm.query.hex.QueryContractHexUsecase
 import com.elrond.erdkotlin.vm.query.integer.QueryContractIntUsecase
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringUsecase
 
-// Implemented as an `object` because we are not using any dependency injection library
-// We don't want to force the host app to use a specific library.
-object ErdSdk {
-
-    private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url)
+class ErdSdk(
+    elrondNetwork: ElrondNetwork = ElrondNetwork.DevNet
+) {
+    private val elrondProxy = ElrondProxy(elrondNetwork.url)
     private val networkConfigRepository = NetworkConfigRepository(elrondProxy)
     private val accountRepository = AccountRepository(elrondProxy)
     private val transactionRepository = TransactionRepository(elrondProxy)
@@ -38,9 +35,7 @@ object ErdSdk {
     fun getAddressNonceUsecase() = GetAddressNonceUsecase(accountRepository)
     fun getAddressBalanceUsecase() = GetAddressBalanceUsecase(accountRepository)
     fun getNetworkConfigUsecase() = GetNetworkConfigUsecase(networkConfigRepository)
-    fun sendTransactionUsecase() = SendTransactionUsecase(
-        transactionRepository
-    )
+    fun sendTransactionUsecase() = SendTransactionUsecase(transactionRepository)
 
     fun getTransactionsUsecase() = GetAddressTransactionsUsecase(transactionRepository)
     fun getTransactionInfoUsecase() = GetTransactionInfoUsecase(transactionRepository)
@@ -51,28 +46,19 @@ object ErdSdk {
     fun queryContractStringUsecase() = QueryContractStringUsecase(vmRepository)
     fun queryContracInttUsecase() = QueryContractIntUsecase(vmRepository)
     fun callContractUsecase() = CallContractUsecase(sendTransactionUsecase())
-    fun getDnsRegistrationCostUsecase() = GetDnsRegistrationCostUsecase(
-        queryContractUsecase(),
-        computeDnsAddressUsecase()
-    )
+    fun getDnsRegistrationCostUsecase() = GetDnsRegistrationCostUsecase(queryContractUsecase())
 
     fun registerDnsUsecase() = RegisterDnsUsecase(
         sendTransactionUsecase(),
-        computeDnsAddressUsecase(),
         getDnsRegistrationCostUsecase()
     )
-
-    fun checkUsernameUsecase() = CheckUsernameUsecase()
-
-    internal fun computeDnsAddressUsecase() = ComputeDnsAddressUsecase(checkUsernameUsecase())
-
 }
 
 sealed class ElrondNetwork(
     val url: String
 ) {
-    object MainNet : ElrondNetwork("https://api.elrond.com")
-    object DevNet : ElrondNetwork("https://devnet-api.elrond.com")
-    object TestNet : ElrondNetwork("https://testnet-api.elrond.com")
+    object MainNet : ElrondNetwork("https://gateway.elrond.com")
+    object DevNet : ElrondNetwork("https://devnet-gateway.elrond.com")
+    object TestNet : ElrondNetwork("https://testnet-gateway.elrond.com")
     class Custom(url: String) : ElrondNetwork(url)
 }

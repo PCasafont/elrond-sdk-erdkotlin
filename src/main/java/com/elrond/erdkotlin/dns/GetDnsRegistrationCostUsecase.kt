@@ -5,11 +5,10 @@ import com.elrond.erdkotlin.wallet.Address
 import java.math.BigInteger
 
 class GetDnsRegistrationCostUsecase internal constructor(
-    private val queryContractUsecase: QueryContractUsecase,
-    private val computeDnsAddressUsecase: ComputeDnsAddressUsecase
+    private val queryContractUsecase: QueryContractUsecase
 ) {
     suspend fun execute(shardId: Byte): BigInteger {
-        return execute(computeDnsAddressUsecase.execute(shardId))
+        return execute(computeDnsAddress(shardId))
     }
 
     suspend fun execute(dnsAddress: Address): BigInteger {

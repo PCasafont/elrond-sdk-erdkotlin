@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets
 
 class RegisterDnsUsecase internal constructor(
     private val sendTransactionUsecase: SendTransactionUsecase,
-    private val computeDnsAddressUsecase: ComputeDnsAddressUsecase,
     private val getRegistrationCostUsecase: GetDnsRegistrationCostUsecase
 ) {
     suspend fun execute(
@@ -21,7 +20,7 @@ class RegisterDnsUsecase internal constructor(
         gasPrice: Long,
         gasLimit: Long
     ): Transaction {
-        val dnsAddress = computeDnsAddressUsecase.execute(username)
+        val dnsAddress = computeDnsAddress(username)
         val encodedName = Hex.encode(username.toByteArray(StandardCharsets.UTF_8))
         val transaction = Transaction(
             nonce = account.nonce,
