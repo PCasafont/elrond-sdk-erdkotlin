@@ -1,15 +1,15 @@
 package com.elrond.erdkotlin.vm.query.hex
 
+import com.elrond.erdkotlin.vm.VmRepository
 import com.elrond.erdkotlin.vm.query.QueryContractInput
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringOutput
-import com.elrond.erdkotlin.vm.VmRepository
 import com.elrond.erdkotlin.wallet.Address
 
 class QueryContractHexUsecase internal constructor(
     private val vmRepository: VmRepository
 ) {
 
-    fun execute(
+    suspend fun execute(
         contractAddress: Address,
         funcName: String,
         args: List<String> = emptyList(),

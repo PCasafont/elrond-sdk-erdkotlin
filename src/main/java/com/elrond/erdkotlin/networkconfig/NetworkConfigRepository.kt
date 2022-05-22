@@ -7,7 +7,7 @@ import com.elrond.erdkotlin.networkconfig.models.NetworkConfig
 internal class NetworkConfigRepository(
     private val elrondProxy: ElrondProxy
 ) {
-    fun getNetworkConfig(): NetworkConfig {
+    suspend fun getNetworkConfig(): NetworkConfig {
         val response = elrondProxy.getNetworkConfig()
         return requireNotNull(response.data).config.toDomain()
     }

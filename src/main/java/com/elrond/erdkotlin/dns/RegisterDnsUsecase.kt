@@ -13,8 +13,7 @@ class RegisterDnsUsecase internal constructor(
     private val computeDnsAddressUsecase: ComputeDnsAddressUsecase,
     private val getRegistrationCostUsecase: GetDnsRegistrationCostUsecase
 ) {
-
-    fun execute(
+    suspend fun execute(
         username: String,
         account: Account,
         wallet: Wallet,

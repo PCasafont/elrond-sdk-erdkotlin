@@ -8,18 +8,18 @@ import java.math.BigInteger
 internal class AccountRepository(
     private val elrondProxy: ElrondProxy
 ) {
-    fun getAccount(address: Address): Account {
+    suspend fun getAccount(address: Address): Account {
         val response = elrondProxy.getAccount(address)
         val payload = requireNotNull(response.data).account
         return payload.toDomain(address)
     }
 
-    fun getAddressNonce(address: Address): Long {
+    suspend fun getAddressNonce(address: Address): Long {
         val response = elrondProxy.getAddressNonce(address)
         return requireNotNull(response.data).nonce
     }
 
-    fun getAddressBalance(address: Address): BigInteger {
+    suspend fun getAddressBalance(address: Address): BigInteger {
         val response = elrondProxy.getAddressBalance(address)
         return requireNotNull(response.data).balance
     }

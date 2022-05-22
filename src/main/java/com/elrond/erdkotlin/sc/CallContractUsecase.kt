@@ -16,7 +16,7 @@ class CallContractUsecase internal constructor(
 ) {
     // source:
     // https://github.com/ElrondNetwork/elrond-sdk/blob/576fdc4bc0fa713738d8556600f04e6377c7623f/erdpy/contracts.py#L62
-    fun execute(
+    suspend fun execute(
         account: Account,
         wallet: Wallet,
         networkConfig: NetworkConfig,

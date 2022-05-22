@@ -4,6 +4,6 @@ import com.elrond.erdkotlin.wallet.Address
 
 class GetAddressNonceUsecase internal constructor(private val accountRepository: AccountRepository) {
 
-    fun execute(address: Address) = accountRepository.getAddressNonce(address)
+    suspend fun execute(address: Address) = accountRepository.getAddressNonce(address)
 
 }

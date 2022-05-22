@@ -8,6 +8,7 @@ import com.elrond.erdkotlin.sc.CallContractUsecase
 import com.elrond.erdkotlin.wallet.Address
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -17,7 +18,7 @@ class CallContractUsecaseTest {
     private val callContractUsecase = CallContractUsecase(sendTransactionUsecase)
 
     @Test
-    fun `should format data correctly`() {
+    fun `should format data correctly`(): Unit = runBlocking {
         val sentTransaction = callContractUsecase.execute(
             account = account,
             wallet = wallet,
@@ -33,7 +34,7 @@ class CallContractUsecaseTest {
     }
 
     @Test
-    fun `should fail if arg is not digit`() {
+    fun `should fail if arg is not digit`(): Unit = runBlocking {
         shouldThrow<IllegalArgumentException> {
             callContractUsecase.execute(
                 account = account,

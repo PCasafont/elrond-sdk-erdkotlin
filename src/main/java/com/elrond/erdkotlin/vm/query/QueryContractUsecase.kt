@@ -7,7 +7,7 @@ class QueryContractUsecase internal constructor(
     private val vmRepository: VmRepository
 ) {
 
-    fun execute(
+    suspend fun execute(
         contractAddress: Address,
         funcName: String,
         args: List<String> = emptyList(),

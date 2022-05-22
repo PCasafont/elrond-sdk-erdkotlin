@@ -4,6 +4,6 @@ import com.elrond.erdkotlin.wallet.Address
 
 class GetAddressBalanceUsecase internal constructor(private val accountRepository: AccountRepository) {
 
-    fun execute(address: Address) = accountRepository.getAddressBalance(address)
+    suspend fun execute(address: Address) = accountRepository.getAddressBalance(address)
 
 }

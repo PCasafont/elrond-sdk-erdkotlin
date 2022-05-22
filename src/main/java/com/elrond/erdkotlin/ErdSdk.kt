@@ -3,7 +3,7 @@ package com.elrond.erdkotlin
 import com.elrond.erdkotlin.account.AccountRepository
 import com.elrond.erdkotlin.api.ElrondProxy
 import com.elrond.erdkotlin.networkconfig.NetworkConfigRepository
-import com.elrond.erdkotlin.vm.VmRepositoryImpl
+import com.elrond.erdkotlin.vm.VmRepository
 import com.elrond.erdkotlin.account.GetAccountUsecase
 import com.elrond.erdkotlin.account.GetAddressBalanceUsecase
 import com.elrond.erdkotlin.account.GetAddressNonceUsecase
@@ -19,18 +19,16 @@ import com.elrond.erdkotlin.vm.query.QueryContractUsecase
 import com.elrond.erdkotlin.vm.query.hex.QueryContractHexUsecase
 import com.elrond.erdkotlin.vm.query.integer.QueryContractIntUsecase
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringUsecase
-import okhttp3.OkHttpClient
 
 // Implemented as an `object` because we are not using any dependency injection library
 // We don't want to force the host app to use a specific library.
 object ErdSdk {
 
-    val elrondHttpClientBuilder = OkHttpClient.Builder()
-    private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url, elrondHttpClientBuilder)
+    private val elrondProxy = ElrondProxy(ElrondNetwork.DevNet.url)
     private val networkConfigRepository = NetworkConfigRepository(elrondProxy)
     private val accountRepository = AccountRepository(elrondProxy)
     private val transactionRepository = TransactionRepository(elrondProxy)
-    private val vmRepository = VmRepositoryImpl(elrondProxy)
+    private val vmRepository = VmRepository(elrondProxy)
 
     fun setNetwork(elrondNetwork: ElrondNetwork) {
         elrondProxy.setUrl(elrondNetwork.url)

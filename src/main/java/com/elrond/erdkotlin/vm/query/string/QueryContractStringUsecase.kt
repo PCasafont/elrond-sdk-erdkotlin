@@ -1,14 +1,14 @@
 package com.elrond.erdkotlin.vm.query.string
 
-import com.elrond.erdkotlin.vm.query.QueryContractInput
 import com.elrond.erdkotlin.vm.VmRepository
+import com.elrond.erdkotlin.vm.query.QueryContractInput
 import com.elrond.erdkotlin.wallet.Address
 
 class QueryContractStringUsecase internal constructor(
     private val vmRepository: VmRepository
 ) {
 
-    fun execute(
+    suspend fun execute(
         contractAddress: Address,
         funcName: String,
         args: List<String> = emptyList(),

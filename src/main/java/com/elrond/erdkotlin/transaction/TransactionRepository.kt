@@ -11,27 +11,27 @@ import com.elrond.erdkotlin.wallet.Address
 internal class TransactionRepository(
     private val elrondProxy: ElrondProxy
 ) {
-    fun sendTransaction(transaction: Transaction): TransactionHash {
+    suspend fun sendTransaction(transaction: Transaction): TransactionHash {
         val response = elrondProxy.sendTransaction(transaction)
         return TransactionHash(requireNotNull(response.data).txHash)
     }
 
-    fun getTransactions(address: Address): List<TransactionOnNetwork> {
+    suspend fun getTransactions(address: Address): List<TransactionOnNetwork> {
         val response = elrondProxy.getAddressTransactions(address)
         return response.data?.transactions?.map { it.toDomain() } ?: emptyList()
     }
 
-    fun estimateCostOfTransaction(transaction: Transaction): String {
+    suspend fun estimateCostOfTransaction(transaction: Transaction): String {
         val response = elrondProxy.estimateCostOfTransaction(transaction)
         return requireNotNull(response.data).txGasUnits
     }
 
-    fun getTransactionInfo(txHash: String, sender: Address?): TransactionInfo {
+    suspend fun getTransactionInfo(txHash: String, sender: Address?): TransactionInfo {
         val response = elrondProxy.getTransactionInfo(txHash, sender)
         return requireNotNull(response.data).transaction.toDomain()
     }
 
-    fun getTransactionStatus(txHash: String, sender: Address?): String {
+    suspend fun getTransactionStatus(txHash: String, sender: Address?): String {
         val response = elrondProxy.getTransactionStatus(txHash, sender)
         return requireNotNull(response.data).status
     }

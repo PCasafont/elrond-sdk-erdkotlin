@@ -6,7 +6,7 @@ import com.elrond.erdkotlin.wallet.Wallet
 class SendTransactionUsecase internal constructor(
     private val transactionRepository: TransactionRepository
 ) {
-    fun execute(transaction: Transaction, wallet: Wallet): Transaction {
+    suspend fun execute(transaction: Transaction, wallet: Wallet): Transaction {
         val signedTransaction = when {
             transaction.isSigned -> transaction
             else -> wallet.sign(transaction)
