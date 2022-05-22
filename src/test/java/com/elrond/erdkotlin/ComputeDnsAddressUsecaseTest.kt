@@ -2,6 +2,7 @@ package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.account.Account
 import com.elrond.erdkotlin.wallet.Address
+import com.elrond.erdkotlin.wallet.asBech32Address
 import io.kotest.matchers.shouldBe
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -28,7 +29,7 @@ class ComputeDnsAddressUsecaseTest {
     fun computeAddress() {
         val address = computeDnsAddressUsecase.computeAddress(
             Account(
-                address = Address.fromBech32("erd1qyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqq7se967nn")
+                address = "erd1qyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqyqszqgpqq7se967nn".asBech32Address()
             )
         )
         address.bech32() shouldBe "erd1qqqqqqqqqqqqqpgq2u60t6gppp8uyrtutng27k9quk42xw6qqq7s63qz5v"

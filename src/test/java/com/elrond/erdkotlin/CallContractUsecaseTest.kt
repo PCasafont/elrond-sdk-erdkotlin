@@ -6,6 +6,7 @@ import com.elrond.erdkotlin.helper.TestDataProvider.wallet
 import com.elrond.erdkotlin.helper.TestUsecaseProvider.sendTransactionUsecase
 import com.elrond.erdkotlin.sc.CallContractUsecase
 import com.elrond.erdkotlin.wallet.Address
+import com.elrond.erdkotlin.wallet.asBech32Address
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
@@ -25,7 +26,7 @@ class CallContractUsecaseTest {
             networkConfig = networkConfig,
             gasPrice = 100,
             gasLimit = 100,
-            contractAddress = Address.fromBech32("erd1qqqqqqqqqqqqqpgqagvtnqn9dgnx7a6stw4n92kufathjrfd8tzqf80mkz"),
+            contractAddress = "erd1qqqqqqqqqqqqqpgqagvtnqn9dgnx7a6stw4n92kufathjrfd8tzqf80mkz".asBech32Address(),
             funcName = "awesomeFunc",
             args = listOf("255", "0x5745474c442d616263646566", "0xDEADBEEF")
         )
@@ -42,7 +43,7 @@ class CallContractUsecaseTest {
                 networkConfig = networkConfig,
                 gasPrice = 100,
                 gasLimit = 100,
-                contractAddress = Address.fromBech32("erd1qqqqqqqqqqqqqpgqagvtnqn9dgnx7a6stw4n92kufathjrfd8tzqf80mkz"),
+                contractAddress = "erd1qqqqqqqqqqqqqpgqagvtnqn9dgnx7a6stw4n92kufathjrfd8tzqf80mkz".asBech32Address(),
                 funcName = "awesomeFunc",
                 args = listOf("notADigit")
             )

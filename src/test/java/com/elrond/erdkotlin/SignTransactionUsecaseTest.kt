@@ -6,6 +6,7 @@ import com.elrond.erdkotlin.transaction.models.Transaction
 import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.helper.TestDataProvider
 import com.elrond.erdkotlin.transaction.sign
+import com.elrond.erdkotlin.wallet.asBech32Address
 import io.kotest.matchers.shouldBe
 import org.junit.Assert
 import org.junit.Test
@@ -33,8 +34,8 @@ class SignTransactionUsecaseTest {
     @Test
     fun `sign with username`() {
         val transaction = Transaction(
-            sender = Address.fromBech32("erd1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssycr6th"),
-            receiver = Address.fromBech32("erd1spyavw0956vq68xj8y4tenjpq2wd5a9p2c6j8gsz7ztyrnpxrruqzu66jx"),
+            sender = "erd1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssycr6th".asBech32Address(),
+            receiver = "erd1spyavw0956vq68xj8y4tenjpq2wd5a9p2c6j8gsz7ztyrnpxrruqzu66jx".asBech32Address(),
             value = BigInteger.ZERO,
             senderUsername = "alice",
             receiverUsername = "bob",

@@ -2,6 +2,7 @@ package com.elrond.erdkotlin.dns
 
 import com.elrond.erdkotlin.account.Account
 import com.elrond.erdkotlin.wallet.Address
+import com.elrond.erdkotlin.wallet.asHexAddress
 import org.bouncycastle.jcajce.provider.digest.Keccak
 import org.bouncycastle.util.encoders.Hex
 import java.nio.charset.StandardCharsets
@@ -28,7 +29,7 @@ internal class ComputeDnsAddressUsecase(private val checkUsernameUsecase: CheckU
         )
         val deployerPubkey = deployerPubkeyPrefix + 0 + shardId
         val account = Account(
-            address = Address.fromHex(String(Hex.encode(deployerPubkey))),
+            address = String(Hex.encode(deployerPubkey)).asHexAddress(),
             nonce = 0
         )
         return computeAddress(account)
@@ -51,7 +52,7 @@ internal class ComputeDnsAddressUsecase(private val checkUsernameUsecase: CheckU
         val ownerHash = Keccak.Digest256().digest(bytesToHash)
         val dnsAddress =
             ByteArray(8) { 0 } + 5 + 0 + ownerHash.slice(10 until 30) + ownerBytes[30] + ownerBytes[31]
-        return Address.fromHex(String(Hex.encode(dnsAddress)))
+        return String(Hex.encode(dnsAddress)).asHexAddress()
     }
 
     // litte endian implementation

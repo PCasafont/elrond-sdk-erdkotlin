@@ -16,6 +16,7 @@ import com.elrond.erdkotlin.vm.query.QueryContractOutput
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringOutput
 import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.utils.toHexString
+import com.elrond.erdkotlin.wallet.asBech32Address
 import org.bouncycastle.util.encoders.Base64
 import java.math.BigInteger
 
@@ -28,8 +29,8 @@ internal fun GetAccountResponse.AccountData.toDomain(address: Address) = Account
 )
 
 internal fun GetAddressTransactionsResponse.TransactionOnNetworkData.toDomain() = TransactionOnNetwork(
-    sender = Address.fromBech32(sender),
-    receiver = Address.fromBech32(receiver),
+    sender = sender.asBech32Address(),
+    receiver = receiver.asBech32Address(),
     senderUsername = senderUsername,
     receiverUsername = receiverUsername,
     nonce = nonce,
@@ -78,8 +79,8 @@ internal fun GetTransactionInfoResponse.TransactionInfoData.toDomain() = Transac
     round = round,
     epoch = epoch,
     value = value,
-    sender = Address.fromBech32(sender),
-    receiver = Address.fromBech32(receiver),
+    sender = sender.asBech32Address(),
+    receiver = receiver.asBech32Address(),
     senderUsername = senderUsername,
     receiverUsername = receiverUsername,
     gasPrice = gasPrice,
