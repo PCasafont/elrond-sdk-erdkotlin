@@ -1,6 +1,6 @@
 package com.elrond.erdkotlin.vm
 
-import com.elrond.erdkotlin.api.ElrondProxy
+import com.elrond.erdkotlin.api.gateway.ElrondGateway
 import com.elrond.erdkotlin.data.toDomain
 import com.elrond.erdkotlin.vm.query.QueryContractInput
 import com.elrond.erdkotlin.vm.query.QueryContractOutput
@@ -8,22 +8,22 @@ import com.elrond.erdkotlin.vm.query.integer.QueryContractDigitOutput
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringOutput
 
 internal class VmRepository(
-    private val elrondProxy: ElrondProxy
+    private val elrondGateway: ElrondGateway
 ) {
     suspend fun queryContract(queryContractInput: QueryContractInput): QueryContractOutput {
-        return requireNotNull(elrondProxy.queryContract(queryContractInput).data).toDomain()
+        return requireNotNull(elrondGateway.queryContract(queryContractInput).data).toDomain()
     }
 
     suspend fun queryContractHex(queryContractInput: QueryContractInput): QueryContractStringOutput {
-        return requireNotNull(elrondProxy.queryContractHex(queryContractInput)).toDomain()
+        return requireNotNull(elrondGateway.queryContractHex(queryContractInput)).toDomain()
     }
 
     suspend fun queryContractString(queryContractInput: QueryContractInput): QueryContractStringOutput {
-        return requireNotNull(elrondProxy.queryContractString(queryContractInput)).toDomain()
+        return requireNotNull(elrondGateway.queryContractString(queryContractInput)).toDomain()
     }
 
     suspend fun queryContractInt(queryContractInput: QueryContractInput): QueryContractDigitOutput {
-        return requireNotNull(elrondProxy.queryContractInt(queryContractInput)).toDomain()
+        return requireNotNull(elrondGateway.queryContractInt(queryContractInput)).toDomain()
     }
 
 }

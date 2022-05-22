@@ -1,9 +1,6 @@
 package com.elrond.erdkotlin.transaction.models
 
-import com.elrond.erdkotlin.AddressException
-import com.elrond.erdkotlin.CannotSerializeTransactionException
 import com.elrond.erdkotlin.wallet.Address
-import com.google.gson.GsonBuilder
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

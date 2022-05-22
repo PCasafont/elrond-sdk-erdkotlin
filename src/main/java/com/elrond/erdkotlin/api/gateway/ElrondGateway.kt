@@ -1,4 +1,4 @@
-package com.elrond.erdkotlin.api
+package com.elrond.erdkotlin.api.gateway
 
 import com.elrond.erdkotlin.account.responses.GetAccountResponse
 import com.elrond.erdkotlin.account.responses.GetAddressBalanceResponse
@@ -16,47 +16,42 @@ import com.elrond.erdkotlin.vm.responses.QueryContractStringResponse
 import com.elrond.erdkotlin.transaction.models.Transaction
 import com.elrond.erdkotlin.transaction.models.toDto
 import com.elrond.erdkotlin.wallet.Address
-import com.google.gson.Gson
 
-internal class ElrondProxy(
+internal class ElrondGateway(
     url: String
 ) {
-    private val elrondClient = ElrondClient(url)
-
-    fun setUrl(url: String) {
-        elrondClient.url = url
-    }
+    private val client = ElrondGatewayHttpClient(url)
 
     suspend fun getNetworkConfig(): GetNetworkConfigResponse {
-        return elrondClient.doGet("network/config")
+        return client.get("network/config")
     }
 
     // Addresses
 
     suspend fun getAccount(address: Address): GetAccountResponse {
-        return elrondClient.doGet("address/${address.bech32()}")
+        return client.get("address/${address.bech32()}")
     }
 
     suspend fun getAddressNonce(address: Address): GetAddressNonceResponse {
-        return elrondClient.doGet("address/${address.bech32()}/nonce")
+        return client.get("address/${address.bech32()}/nonce")
     }
 
     suspend fun getAddressBalance(address: Address): GetAddressBalanceResponse {
-        return elrondClient.doGet("address/${address.bech32()}/balance")
+        return client.get("address/${address.bech32()}/balance")
     }
 
     suspend fun getAddressTransactions(address: Address): GetAddressTransactionsResponse {
-        return elrondClient.doGet("address/${address.bech32()}/transactions")
+        return client.get("address/${address.bech32()}/transactions")
     }
 
     // Transactions
 
     suspend fun sendTransaction(transaction: Transaction): SendTransactionResponse {
-        return elrondClient.doPost("transaction/send", transaction.toDto())
+        return client.post("transaction/send", transaction.toDto())
     }
 
     suspend fun estimateCostOfTransaction(transaction: Transaction): EstimateCostOfTransactionResponse {
-        return elrondClient.doPost("transaction/cost", transaction.toDto())
+        return client.post("transaction/cost", transaction.toDto())
     }
 
     suspend fun getTransactionInfo(txHash: String, sender: Address?): GetTransactionInfoResponse {
@@ -64,7 +59,7 @@ internal class ElrondProxy(
             null -> ""
             else -> "?sender=${sender.bech32()}"
         }
-        return elrondClient.doGet("transaction/$txHash$senderAddress")
+        return client.get("transaction/$txHash$senderAddress")
     }
 
     suspend fun getTransactionStatus(txHash: String, sender: Address?): GetTransactionStatusResponse {
@@ -72,25 +67,25 @@ internal class ElrondProxy(
             null -> ""
             else -> "?sender=${sender.bech32()}"
         }
-        return elrondClient.doGet("transaction/$txHash/status$senderAddress")
+        return client.get("transaction/$txHash/status$senderAddress")
     }
 
     // VM
 
     // Compute Output of Pure Function
     suspend fun queryContract(queryContractInput: QueryContractInput): QueryContractResponse {
-        return elrondClient.doPost("vm-values/query", queryContractInput)
+        return client.post("vm-values/query", queryContractInput)
     }
 
     suspend fun queryContractHex(queryContractInput: QueryContractInput): QueryContractStringResponse {
-        return elrondClient.doPost("vm-values/hex", queryContractInput)
+        return client.post("vm-values/hex", queryContractInput)
     }
 
     suspend fun queryContractString(queryContractInput: QueryContractInput): QueryContractStringResponse {
-        return elrondClient.doPost("vm-values/string", queryContractInput)
+        return client.post("vm-values/string", queryContractInput)
     }
 
     suspend fun queryContractInt(queryContractInput: QueryContractInput): QueryContractDigitResponse {
-        return elrondClient.doPost("vm-values/int", queryContractInput)
+        return client.post("vm-values/int", queryContractInput)
     }
 }

@@ -12,10 +12,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    //implementation(kotlin("serialization"))
 
-    implementation("commons-codec:commons-codec:1.13")
-    implementation("com.google.code.gson:gson:2.8.5")
     implementation("org.bitcoinj:bitcoinj-core:0.16.1")
 
     implementation("io.ktor:ktor-client-apache:2.0.1")

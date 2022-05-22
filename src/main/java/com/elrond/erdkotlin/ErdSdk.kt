@@ -1,7 +1,7 @@
 package com.elrond.erdkotlin
 
 import com.elrond.erdkotlin.account.AccountRepository
-import com.elrond.erdkotlin.api.ElrondProxy
+import com.elrond.erdkotlin.api.gateway.ElrondGateway
 import com.elrond.erdkotlin.networkconfig.NetworkConfigRepository
 import com.elrond.erdkotlin.vm.VmRepository
 import com.elrond.erdkotlin.account.GetAccountUsecase
@@ -21,15 +21,11 @@ import com.elrond.erdkotlin.vm.query.string.QueryContractStringUsecase
 class ErdSdk(
     elrondNetwork: ElrondNetwork = ElrondNetwork.DevNet
 ) {
-    private val elrondProxy = ElrondProxy(elrondNetwork.url)
-    private val networkConfigRepository = NetworkConfigRepository(elrondProxy)
-    private val accountRepository = AccountRepository(elrondProxy)
-    private val transactionRepository = TransactionRepository(elrondProxy)
-    private val vmRepository = VmRepository(elrondProxy)
-
-    fun setNetwork(elrondNetwork: ElrondNetwork) {
-        elrondProxy.setUrl(elrondNetwork.url)
-    }
+    private val elrondGateway = ElrondGateway(elrondNetwork.url)
+    private val networkConfigRepository = NetworkConfigRepository(elrondGateway)
+    private val accountRepository = AccountRepository(elrondGateway)
+    private val transactionRepository = TransactionRepository(elrondGateway)
+    private val vmRepository = VmRepository(elrondGateway)
 
     fun getAccountUsecase() = GetAccountUsecase(accountRepository)
     fun getAddressNonceUsecase() = GetAddressNonceUsecase(accountRepository)

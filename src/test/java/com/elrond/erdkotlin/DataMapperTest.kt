@@ -21,9 +21,9 @@ class DataMapperTest {
             gasRemaining = BigInteger.ZERO,
             gasRefund = BigInteger.ZERO,
             outputAccounts = null,
-            deletedAccounts = null,
-            touchedAccounts = null,
-            logs = null
+            //deletedAccounts = null,
+            //touchedAccounts = null,
+            //logs = null
         )
 
         val returnedData = queryResponseData.toDomain().returnData?.first()!!

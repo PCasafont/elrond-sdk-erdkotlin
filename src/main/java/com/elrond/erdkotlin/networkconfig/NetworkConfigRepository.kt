@@ -1,14 +1,14 @@
 package com.elrond.erdkotlin.networkconfig
 
-import com.elrond.erdkotlin.api.ElrondProxy
+import com.elrond.erdkotlin.api.gateway.ElrondGateway
 import com.elrond.erdkotlin.data.toDomain
 import com.elrond.erdkotlin.networkconfig.models.NetworkConfig
 
 internal class NetworkConfigRepository(
-    private val elrondProxy: ElrondProxy
+    private val elrondGateway: ElrondGateway
 ) {
     suspend fun getNetworkConfig(): NetworkConfig {
-        val response = elrondProxy.getNetworkConfig()
-        return requireNotNull(response).config.toDomain()
+        val response = elrondGateway.getNetworkConfig()
+        return response.config.toDomain()
     }
 }

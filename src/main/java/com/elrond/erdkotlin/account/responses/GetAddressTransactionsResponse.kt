@@ -1,16 +1,21 @@
 package com.elrond.erdkotlin.account.responses
 
+import com.elrond.erdkotlin.utils.BigIntegerSerializer
+import kotlinx.serialization.Serializable
 import java.math.BigInteger
 
+@Serializable
 internal data class GetAddressTransactionsResponse(
     val transactions: List<TransactionOnNetworkData>
 ) {
+    @Serializable
     data class TransactionOnNetworkData(
         val sender: String,
         val receiver: String,
         val senderUsername: String?,
         val receiverUsername: String?,
         val nonce: Long,
+        @Serializable(with = BigIntegerSerializer::class)
         val value: BigInteger,
         val gasPrice: Long,
         val gasLimit: Long,
@@ -30,11 +35,13 @@ internal data class GetAddressTransactionsResponse(
         val hyperblockNonce: Long?
     ) {
         // source : https://github.com/ElrondNetwork/elrond-go/blob/2be09d2377993cda87cef7b4167c915d8ea5f163/data/transaction/apiTransactionResult.go#L57
+        @Serializable
         data class ScResult(
             val hash: String?,
             val nonce: Long,
             val gasLimit: Long,
             val gasPrice: Long,
+            @Serializable(with = BigIntegerSerializer::class)
             val value: BigInteger,
             val sender: String,
             val receiver: String,
