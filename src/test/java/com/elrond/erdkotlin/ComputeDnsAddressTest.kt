@@ -5,13 +5,11 @@ import com.elrond.erdkotlin.dns.computeAddress
 import com.elrond.erdkotlin.dns.computeDnsAddress
 import com.elrond.erdkotlin.dns.nameHash
 import com.elrond.erdkotlin.dns.toUInt32ByteArray
-import com.elrond.erdkotlin.wallet.Address
 import com.elrond.erdkotlin.wallet.asBech32Address
 import io.kotest.matchers.shouldBe
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class ComputeDnsAddressUsecaseTest {
+class ComputeDnsAddressTest {
 
     @Test
     fun nameHash() {

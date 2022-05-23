@@ -1,6 +1,9 @@
 package com.elrond.erdkotlin.transaction.models
 
 import com.elrond.erdkotlin.wallet.Address
+import com.elrond.erdkotlin.wallet.asBech32Address
+import com.elrond.erdkotlin.wallet.createWalletFromMnemonic
+import com.elrond.erdkotlin.wallet.createWalletFromPrivateKey
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

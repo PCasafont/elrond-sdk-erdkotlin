@@ -27,7 +27,7 @@ private val ELROND_DERIVATION_PATH = longArrayOf(44, 508, 0, 0, 0)
 
 class Wallet(
     private val publicKey: ByteArray,
-    private val privateKey: ByteArray,
+    val privateKey: ByteArray,
 ) {
     val publicKeyHex: String = String(Hex.encode(publicKey))
     val privateKeyHex: String = String(Hex.encode(privateKey))
@@ -80,6 +80,11 @@ private data class KeyAndChainCode(
         result = 31 * result + chainCode.contentHashCode()
         return result
     }
+}
+
+fun createNewWallet(): Pair<String, Wallet> {
+    val mnemonic = generateWalletMnemonic().joinToString(separator = " ")
+    return mnemonic to createWalletFromMnemonic(mnemonic, 0)
 }
 
 fun createWalletFromPrivateKey(privateKey: ByteArray): Wallet {

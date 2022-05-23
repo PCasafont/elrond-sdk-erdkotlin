@@ -1,10 +1,8 @@
 plugins {
     kotlin("jvm") version "1.6.20"
     kotlin("plugin.serialization") version "1.6.20"
+    `maven-publish`
 }
-
-group = "elrond"
-version = "0.4.0"
 
 repositories {
     mavenCentral()
@@ -23,6 +21,18 @@ dependencies {
     testImplementation("junit:junit:4.13.1")
     testImplementation("io.kotest:kotest-assertions-core:4.6.4")
     testImplementation("io.mockk:mockk:1.12.4")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            group = "elrond"
+            artifactId = "elrond-sdk-erdkotlin"
+            version = "0.1.0"
+
+            from(components["java"])
+        }
+    }
 }
 
 tasks.wrapper {

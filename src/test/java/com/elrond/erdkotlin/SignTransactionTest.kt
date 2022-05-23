@@ -12,7 +12,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.Test
 import java.math.BigInteger
 
-class SignTransactionUsecaseTest {
+class SignTransactionTest {
 
     @Test
     fun `sign with data field`() {

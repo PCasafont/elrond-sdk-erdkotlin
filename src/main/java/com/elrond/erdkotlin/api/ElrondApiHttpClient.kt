@@ -1,13 +1,11 @@
 package com.elrond.erdkotlin.api
 
-import com.elrond.erdkotlin.ProxyRequestException
-import com.elrond.erdkotlin.api.gateway.ResponseBase
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 internal class ElrondApiHttpClient(
@@ -30,6 +28,7 @@ internal class ElrondApiHttpClient(
 
     suspend inline fun <reified T, reified B> post(resourceUrl: String, body: B): T {
         val response: T = httpClient.post("$url/$resourceUrl") {
+            contentType(ContentType.Application.Json)
             setBody(body)
         }.body()
         return response

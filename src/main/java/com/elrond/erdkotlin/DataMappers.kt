@@ -15,7 +15,7 @@ import com.elrond.erdkotlin.vm.query.integer.QueryContractDigitOutput
 import com.elrond.erdkotlin.vm.query.QueryContractOutput
 import com.elrond.erdkotlin.vm.query.string.QueryContractStringOutput
 import com.elrond.erdkotlin.wallet.Address
-import com.elrond.erdkotlin.utils.toHexString
+import com.elrond.erdkotlin.utils.toHex
 import com.elrond.erdkotlin.wallet.asBech32Address
 import org.bouncycastle.util.encoders.Base64
 import java.math.BigInteger
@@ -99,7 +99,7 @@ internal fun GetTransactionInfoResponse.TransactionInfoData.toDomain() = Transac
 internal fun QueryContractResponse.Data.toDomain() = QueryContractOutput(
     returnData = returnData?.map { base64 ->
         val bytes = Base64.decode(base64)
-        val asHex = bytes.toHexString()
+        val asHex = bytes.toHex()
         QueryContractOutput.ReturnData(
             asBase64 = base64,
             asString = String(bytes),

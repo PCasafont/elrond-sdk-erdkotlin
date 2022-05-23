@@ -4,7 +4,7 @@ import com.elrond.erdkotlin.dns.checkUsername
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
-class CheckUsernameUsecaseTest {
+class CheckUsernameTest {
 
     @Test
     fun `valid alphanumeric`() {

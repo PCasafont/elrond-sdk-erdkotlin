@@ -21,7 +21,7 @@ internal class TransactionRepository(
         return response.transactions.map { it.toDomain() }
     }
 
-    suspend fun estimateCostOfTransaction(transaction: Transaction): String {
+    suspend fun estimateCostOfTransaction(transaction: Transaction): Long {
         val response = elrondGateway.estimateCostOfTransaction(transaction)
         return response.txGasUnits
     }

@@ -22,6 +22,8 @@ data class Address internal constructor(
     fun bech32(): String {
         return Bech32.encode(Bech32.Encoding.BECH32, HRP, pubkey().convertBits(8, 5, true))
     }
+
+    override fun toString() = bech32()
 }
 
 fun createZeroAddress() = Address(ZERO_PUBKEY_STRING)
