@@ -23,4 +23,9 @@ internal class AccountRepository(
         val response = elrondGateway.getAddressBalance(address)
         return response.balance
     }
+
+    suspend fun getAddressEsdtBalance(address: Address, tokenId: String): BigInteger {
+        val response = elrondGateway.getAddressEsdtBalance(address, tokenId)
+        return response.tokenData.balance
+    }
 }

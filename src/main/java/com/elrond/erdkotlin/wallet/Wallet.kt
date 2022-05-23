@@ -2,6 +2,7 @@ package com.elrond.erdkotlin.wallet
 
 import com.elrond.erdkotlin.CannotDeriveKeysException
 import com.elrond.erdkotlin.CannotGenerateMnemonicException
+import com.elrond.erdkotlin.ErdSdk
 import org.bitcoinj.crypto.MnemonicCode
 import org.bitcoinj.crypto.MnemonicException.MnemonicLengthException
 import org.bouncycastle.crypto.digests.SHA512Digest
@@ -82,12 +83,12 @@ private data class KeyAndChainCode(
     }
 }
 
-fun createNewWallet(): Pair<String, Wallet> {
+fun ErdSdk.createNewWallet(): Pair<String, Wallet> {
     val mnemonic = generateWalletMnemonic().joinToString(separator = " ")
     return mnemonic to createWalletFromMnemonic(mnemonic, 0)
 }
 
-fun createWalletFromPrivateKey(privateKey: ByteArray): Wallet {
+fun ErdSdk.createWalletFromPrivateKey(privateKey: ByteArray): Wallet {
     val privateKeyParameters = Ed25519PrivateKeyParameters(privateKey, 0)
     val publicKeyParameters = privateKeyParameters.generatePublicKey()
     return Wallet(
@@ -96,11 +97,11 @@ fun createWalletFromPrivateKey(privateKey: ByteArray): Wallet {
     )
 }
 
-fun createWalletFromPrivateKey(privateKeyHex: String) = createWalletFromPrivateKey(
+fun ErdSdk.createWalletFromPrivateKey(privateKeyHex: String) = createWalletFromPrivateKey(
     Hex.decode(privateKeyHex)
 )
 
-fun createWalletFromMnemonic(mnemonic: String, accountIndex: Long): Wallet {
+fun ErdSdk.createWalletFromMnemonic(mnemonic: String, accountIndex: Long): Wallet {
     return try {
         val seed: ByteArray = mnemonicToBip39Seed(mnemonic)
         val privateKey: ByteArray = bip39SeedToPrivateKey(seed, accountIndex)
@@ -110,7 +111,7 @@ fun createWalletFromMnemonic(mnemonic: String, accountIndex: Long): Wallet {
     }
 }
 
-fun generateWalletMnemonic(): List<String> {
+fun ErdSdk.generateWalletMnemonic(): List<String> {
     return try {
         val entropy = generateEntropy()
         MnemonicCode().toMnemonic(entropy)

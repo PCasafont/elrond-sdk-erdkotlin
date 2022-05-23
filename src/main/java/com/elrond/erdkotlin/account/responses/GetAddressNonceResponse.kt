@@ -5,6 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class GetAddressNonceResponse(
-    @Serializable(with = BigIntegerSerializer::class)
     val nonce: Long
 )

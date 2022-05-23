@@ -1,7 +1,9 @@
 package com.elrond.erdkotlin.api.gateway
 
+import com.elrond.erdkotlin.account.responses.*
 import com.elrond.erdkotlin.account.responses.GetAccountResponse
 import com.elrond.erdkotlin.account.responses.GetAddressBalanceResponse
+import com.elrond.erdkotlin.account.responses.GetAddressEsdtBalanceResponse
 import com.elrond.erdkotlin.account.responses.GetAddressNonceResponse
 import com.elrond.erdkotlin.account.responses.GetAddressTransactionsResponse
 import com.elrond.erdkotlin.networkconfig.GetNetworkConfigResponse
@@ -38,6 +40,10 @@ internal class ElrondGateway(
 
     suspend fun getAddressBalance(address: Address): GetAddressBalanceResponse {
         return client.get("address/${address.bech32()}/balance")
+    }
+
+    suspend fun getAddressEsdtBalance(address: Address, tokenId: String): GetAddressEsdtBalanceResponse {
+        return client.get("address/${address.bech32()}/esdt/$tokenId")
     }
 
     suspend fun getAddressTransactions(address: Address): GetAddressTransactionsResponse {

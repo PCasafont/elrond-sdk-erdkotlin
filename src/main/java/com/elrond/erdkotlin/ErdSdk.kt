@@ -40,6 +40,9 @@ class ErdSdk(
     suspend fun getAddressBalance(address: Address) =
         accountRepository.getAddressBalance(address)
 
+    suspend fun getAddressEsdtBalance(address: Address, tokenId: String) =
+        accountRepository.getAddressEsdtBalance(address, tokenId)
+
     suspend fun getNetworkConfig() =
         networkConfigRepository.getNetworkConfig()
 
