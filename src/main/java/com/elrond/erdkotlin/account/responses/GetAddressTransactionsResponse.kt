@@ -12,8 +12,8 @@ internal data class GetAddressTransactionsResponse(
     data class TransactionOnNetworkData(
         val sender: String,
         val receiver: String,
-        val senderUsername: String?,
-        val receiverUsername: String?,
+        val senderUsername: String? = null,
+        val receiverUsername: String? = null,
         val nonce: Long,
         @Serializable(with = BigIntegerSerializer::class)
         val value: BigInteger,
@@ -31,13 +31,13 @@ internal data class GetAddressTransactionsResponse(
         val round: Long,
         val searchOrder: Long,
         val fee: String,
-        val scResults: List<ScResult>?,
-        val hyperblockNonce: Long?
+        val scResults: List<ScResult>? = null,
+        val hyperblockNonce: Long? = null
     ) {
         // source : https://github.com/ElrondNetwork/elrond-go/blob/2be09d2377993cda87cef7b4167c915d8ea5f163/data/transaction/apiTransactionResult.go#L57
         @Serializable
         data class ScResult(
-            val hash: String?,
+            val hash: String? = null,
             val nonce: Long,
             val gasLimit: Long,
             val gasPrice: Long,
@@ -45,16 +45,16 @@ internal data class GetAddressTransactionsResponse(
             val value: BigInteger,
             val sender: String,
             val receiver: String,
-            val relayedValue: String?,
-            val data: String?,
+            val relayedValue: String? = null,
+            val data: String? = null,
             val prevTxHash: String,
             val originalTxHash: String,
             val callType: String,
-            val relayerAddress: String?,
-            val code: String?,
-            val codeMetadata: String?,
-            val returnMessage: String?,
-            val originalSender: String?,
+            val relayerAddress: String? = null,
+            val code: String? = null,
+            val codeMetadata: String? = null,
+            val returnMessage: String? = null,
+            val originalSender: String? = null,
         )
     }
 }
